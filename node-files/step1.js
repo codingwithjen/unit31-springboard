@@ -1,5 +1,5 @@
 const fs = require('fs');
-const process = require('process')
+const process = require('process');
 
 // Write a function, cat. It should take one argument, path, and it should read the file with that
 // path, and print the contents of the file. Then, write some code that calls that function,

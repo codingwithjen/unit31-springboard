@@ -1,10 +1,10 @@
 const fs = require('fs');
-const process = require('process')
-const axios = require('axios').default;
+const process = require('process');
+const axios = require('axios');
 
-// Write a function, cat. It should take one argument, path, and it should read the file with that
-// path, and print the contents of the file. Then, write some code that calls that function,
-// allowing you to specify the path argument via the command line
+// Add a new function, webCat. This should take a URL and, using axios, should read the content of that
+// URL and print it to the console
+
 function cat(path) {
     fs.readFile(path, 'utf8', function(err, data) {
         if (err) {
@@ -18,6 +18,25 @@ function cat(path) {
     });
 }
 
-function webCat
-// cat(process.argv[1]);
-cat(process.argv[2]);
+async function webCat(url) {
+    try {
+        let resp = await axios.get(url);
+        console.log(resp.data);
+    } catch (err) {
+        console.error(`Error fetching ${url}: ${err}`);
+        // kill the process and tell the shell it errored
+        process.exit(1);
+    }
+}
+
+// Modify the code that invoked cat so that based on the command-line args, it decides whether the
+// argument is a file path or a URL and calls either cat or webCat, respectively
+
+let path = process.argv[2];
+
+if (path.slice(0,4) == 'http') {
+    webCat(path);
+} else {
+    cat(path);
+}
+
